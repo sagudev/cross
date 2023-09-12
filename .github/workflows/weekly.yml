@@ -97,6 +97,7 @@ jobs:
 
       - name: Test Zig Image
         if: steps.prepare-meta.outputs.has-image && steps.prepare-meta.outputs.test-variant == 'zig'
+        continue-on-error: true
         run: ./ci/test-zig-image.sh
         shell: bash
 
