@@ -118,7 +118,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push
-        run: cargo xtask build-docker-image -v --push "${TARGET}${SUB:+.$SUB}"
+        run: cargo xtask build-docker-image -v --push "${TARGET}${SUB:+.$SUB}" --repository "ghcr.io/sagudev"
         env:
           TARGET: ${{ matrix.target }}
           SUB: ${{ matrix.sub }}
