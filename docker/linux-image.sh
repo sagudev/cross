@@ -57,17 +57,16 @@ max_kernel_version() {
 main() {
     # arch in the rust target
     local arch="${1}" \
-        kversion=5.10.0-16
+        kversion=6.1.0-10
 
-    local debsource="deb http://http.debian.net/debian/ bullseye main"
-    debsource="${debsource}\ndeb http://security.debian.org/ bullseye-security main"
+    local debsource="deb http://http.debian.net/debian/ bookworm main"
+    debsource="${debsource}\ndeb http://security.debian.org/ bookworm-security main"
 
     local dropbear="dropbear-bin"
 
     local -a deps
     local kernel=
     local libgcc="libgcc-s1"
-    local ncurses=
 
     # select debian arch and kernel version
     case "${arch}" in
@@ -87,12 +86,11 @@ main() {
             deps=(libcrypt1:"${arch}")
             ;;
         mips)
-            # mips was discontinued in bullseye, so we have to use buster.
+            # mips was discontinued in bookworm, so we have to use buster.
             libgcc="libgcc1"
             debsource="deb http://http.debian.net/debian/ buster main"
             debsource="${debsource}\ndeb http://security.debian.org/ buster/updates main"
             kernel='4.*-4kc-malta'
-            ncurses="=6.1*"
             ;;
         mipsel)
             kernel='5.*-4kc-malta'
@@ -177,7 +175,7 @@ main() {
     # using dpkg later, since we cannot redownload via apt.
     local dpkg_arch
     dpkg_arch=$(dpkg --print-architecture)
-    local libgcc_packages=("${libgcc}:${arch}" "libstdc++6:${arch}")
+    local libgcc_packages=("${libgcc}:${arch}" "libstdc++-12-dev:${arch}")
     if [[ "${arch}" == "${dpkg_arch}" ]]; then
         local libgcc_root=/qemu/libgcc
         mkdir -p "${libgcc_root}"
@@ -240,8 +238,9 @@ main() {
         "libgmp10:${arch}" \
         "libc6:${arch}" \
         "linux-image-${kernel}:${arch}" \
-        ncurses-base"${ncurses}" \
         "zlib1g:${arch}"
+
+                # ncurses-base \
 
     if [[ "${arch}" != "${dpkg_arch}" ]]; then
         apt-get -d --no-install-recommends download "${libgcc_packages[@]}"
