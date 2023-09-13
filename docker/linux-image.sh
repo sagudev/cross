@@ -77,7 +77,7 @@ main() {
             ;;
         armv7)
             arch=armhf
-            kernel='5.*-armmp'
+            kernel='6.*-armmp'
             deps=(libcrypt1:"${arch}")
             ;;
         i686)
