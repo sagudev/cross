@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 ARG DEBIAN_FRONTEND=noninteractive
 
 COPY common.sh lib.sh /
@@ -17,8 +17,8 @@ COPY musl.sh /
 RUN /musl.sh \
     TARGET=arm-linux-musleabi \
     "COMMON_CONFIG += --with-arch=armv5te \
-                      --with-float=soft \
-                      --with-mode=arm"
+    --with-float=soft \
+    --with-mode=arm"
 
 ENV CROSS_TOOLCHAIN_PREFIX=arm-linux-musleabi-
 ENV CROSS_SYSROOT=/usr/local/arm-linux-musleabi
